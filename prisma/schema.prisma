@@ -18,6 +18,8 @@ model User {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   profile Profile?
+  post Post[]
+  comment Comment[]
 }
 
 model Profile {
@@ -30,4 +32,28 @@ model Profile {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   user User? @relation(fields: [user_Id], references: [id])
+}
+
+model Post {
+id Int @id @default(autoincrement())
+user_Id Int 
+title String @db.VarChar(150)
+content String @db.VarChar(255)
+isPublished Boolean @default(false)
+pic String?
+createdAt   DateTime  @default(now())
+updatedAt   DateTime  @updatedAt
+user User? @relation(fields: [user_Id], references: [id])
+comment Comment[]
+}
+
+model Comment {
+id Int @id @default(autoincrement())
+user_Id Int
+post_Id Int
+content String @db.VarChar(250)
+createdAt   DateTime  @default(now())
+updatedAt   DateTime  @updatedAt
+post Post? @relation(fields: [post_Id], references: [id])
+user User? @relation(fields: [user_Id], references: [id])
 }
